@@ -21,6 +21,11 @@ import java.util.List;
 @Slf4j
 public class BotService extends TelegramLongPollingBot {
     private final BotConfig botConfig;
+    private static final String HELP_TEXT = "This bot is created to demonstrate Spring capabilities.\n\n" +
+            "You can execute command from te main menu on the left or by typing a command:\n\n" +
+            "Type /start to see a welcome message\n\n" +
+            "Type /mydata to see\n\n" +
+            "И БЛА-БЛА";
 
     @Autowired
     public BotService(BotConfig botConfig) {
@@ -57,6 +62,13 @@ public class BotService extends TelegramLongPollingBot {
                 case "/start":
                     try {
                         startCommandReceived(chatId, update.getMessage().getChat().getFirstName());
+                    } catch (TelegramApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case "/help":
+                    try {
+                        sendMessage(chatId, HELP_TEXT);
                     } catch (TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
