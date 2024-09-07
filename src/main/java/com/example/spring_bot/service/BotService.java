@@ -24,18 +24,28 @@ public class BotService extends TelegramLongPollingBot {
     private static final String HELP_TEXT = "This bot is created to demonstrate Spring capabilities.\n\n" +
             "You can execute command from te main menu on the left or by typing a command:\n\n" +
             "Type /start to see a welcome message\n\n" +
-            "Type /mydata to see\n\n" +
-            "И БЛА-БЛА";
+            "Type /myprofile to see your profile\n\n" +
+            "Type /deleteprofile to delete your profile\n\n" +
+            "Type /help to see  help commmand this bot\n\n" +
+            "Type /settings to see  settings this bot\n\n" +
+            "--------------------------------------------\n\n" +
+            "Этот бот создает и помогает найти знакомства в интернете.\n\n" +
+            "Здесь ты сможешь увидеть все команды который имеет данный бот и их информацию:\n\n" +
+            "Тип /start увидишь сообщение, которое приходиь при первом запуске программы\n\n" +
+            "Тип /myprofile увидишь информацию о своем созданном профиле\n\n" +
+            "Тип /deleteprofile удалишь свой профиль\n\n" +
+            "Тип /help увидишь информацию о данном боте и его командах\n\n" +
+            "Тип /settings увидишь информацию о настройках данного бота";
 
     @Autowired
     public BotService(BotConfig botConfig) {
         this.botConfig = botConfig;
         List<BotCommand> listofCommands = new ArrayList();
-        listofCommands.add(new BotCommand("/start", "get a welcome message"));
-        listofCommands.add(new BotCommand("/mydata", "get your data stored"));
-        listofCommands.add(new BotCommand("/deletedata", "delete my data"));
-        listofCommands.add(new BotCommand("/help", "info how to use this bot"));
-        listofCommands.add(new BotCommand("/settings", "set your preferences"));
+        listofCommands.add(new BotCommand("/start", "English: get a welcome message " + " || " + " Русский: получите сообщение, которое при старте"));
+        listofCommands.add(new BotCommand("/myprofile", "English: get your profile " + " || " + " Русский: зайдешь в свой профиль"));
+        listofCommands.add(new BotCommand("/deleteprofile", "English: delete my profile " + " || " + " Русский: удалить свой профиль"));
+        listofCommands.add(new BotCommand("/help", "English: info how to use this bot " + " || " + " Русский: иформация об всех командах, которая использует бот"));
+        listofCommands.add(new BotCommand("/settings", "English: set your preferences " + " || " + "Русский: настройки бота"));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
