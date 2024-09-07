@@ -1,20 +1,41 @@
 package com.example.spring_bot.service;
 
 import com.example.spring_bot.config.BotConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScope;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import javax.xml.stream.events.Comment;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@Slf4j
 public class BotService extends TelegramLongPollingBot {
     private final BotConfig botConfig;
 
     @Autowired
     public BotService(BotConfig botConfig) {
         this.botConfig = botConfig;
+        List<BotCommand> listofCommands = new ArrayList();
+        listofCommands.add(new BotCommand("/start", "get a welcome message"));
+        listofCommands.add(new BotCommand("/mydata", "get your data stored"));
+        listofCommands.add(new BotCommand("/deletedata", "delete my data"));
+        listofCommands.add(new BotCommand("/help", "info how to use this bot"));
+        listofCommands.add(new BotCommand("/settings", "set your preferences"));
+        try {
+            this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException e) {
+            log.error("Error setting bot's command list: " + e.getMessage());
+        }
     }
 
     @Override
@@ -51,7 +72,7 @@ public class BotService extends TelegramLongPollingBot {
     }
 
     public void startCommandReceived(long chatId, String name) throws TelegramApiException {
-        String answer = ("Привет" + name + "рад тебя видеть!))");
+        String answer = ("Привет, " + name + " ,рад тебя видеть!))");
         sendMessage(chatId, answer);
     }
 
